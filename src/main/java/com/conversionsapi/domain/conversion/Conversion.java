@@ -23,5 +23,6 @@ public class Conversion {
     private BigDecimal convertedValue;
     private String convertCurr;
     private LocalDateTime createdAt;
+    private LocalDateTime updateAt;
 
 }
