@@ -16,7 +16,7 @@ public class RequestService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private Float convert(String realCurr, String convertedCurr) throws Exception {
+    public Float convert(String realCurr, String convertedCurr) throws Exception {
         String url = "https://economia.awesomeapi.com.br/last/";
         ResponseEntity<Map> response = restTemplate.getForEntity(url + realCurr.toUpperCase() + "-" + convertedCurr.toUpperCase(), Map.class);
 
@@ -25,7 +25,7 @@ public class RequestService {
         }
 
         Map conversion = (Map) Objects.requireNonNull(response.getBody()).get(realCurr.toUpperCase() + convertedCurr.toUpperCase());
-        return (Float) conversion.get("bid");
+        return Float.parseFloat((String) conversion.get("bid"));
     }
 
 }

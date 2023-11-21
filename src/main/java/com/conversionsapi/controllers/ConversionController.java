@@ -1,19 +1,17 @@
 package com.conversionsapi.controllers;
 
 import com.conversionsapi.domain.conversion.Conversion;
+import com.conversionsapi.dtos.ConversionDTO;
 import com.conversionsapi.services.ConversionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController()
-@RequestMapping("/")
+@RequestMapping("/conversion")
 public class ConversionController {
 
     @Autowired
@@ -24,6 +22,21 @@ public class ConversionController {
         List<Conversion> conversions = this.service.findConversions();
 
         return new ResponseEntity<>(conversions, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> createConversion(@RequestBody ConversionDTO conversionDTO) {
+        try {
+            Conversion conversion = this.service.createConversion(conversionDTO.realCurr(), conversionDTO.convertedCurr(), conversionDTO.realValue());
+
+            return new ResponseEntity<>(conversion, HttpStatus.CREATED);
+        } catch (Exception e) {
+            if (e.getMessage().contains("Moeda especificada não existe")) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

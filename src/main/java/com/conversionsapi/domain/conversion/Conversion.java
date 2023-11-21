@@ -26,12 +26,4 @@ public class Conversion {
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
 
-    public Conversion(ConversionDTO conversion) {
-        this.realCurr = conversion.realCurr();
-        this.realValue = conversion.realValue();
-        this.convertCurr = conversion.convertedCurr();
-        this.createdAt = LocalDateTime.now();
-        this.updateAt = LocalDateTime.now();
-    }
-
 }
