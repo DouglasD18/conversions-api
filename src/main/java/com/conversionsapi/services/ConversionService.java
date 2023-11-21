@@ -1,7 +1,7 @@
 package com.conversionsapi.services;
 
 import com.conversionsapi.domain.conversion.Conversion;
-import com.conversionsapi.repositories.ConversionsRepositorie;
+import com.conversionsapi.repositories.ConversionRepositorie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +12,10 @@ import java.util.Optional;
 public class ConversionService {
 
     @Autowired
-    private ConversionsRepositorie repositorie;
+    private ConversionRepositorie repositorie;
 
-    public Optional<List<Conversion>> findConversions() {
-        Optional<List<Conversion>> conversions = this.repositorie.findConversions();
-        return conversions;
+    public List<Conversion> findConversions() {
+        return this.repositorie.findAll();
     }
 
 }
