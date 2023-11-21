@@ -60,4 +60,10 @@ public class ConversionService {
         return this.repositorie.save(conversion);
     }
 
+    public void deleteConversion(Long id) throws Exception {
+        Conversion conversion = this.findConversionById(id);
+
+        this.repositorie.delete(conversion);
+    }
+
 }
