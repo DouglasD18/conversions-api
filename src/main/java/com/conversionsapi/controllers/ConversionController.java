@@ -39,4 +39,19 @@ public class ConversionController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateConversion(@RequestBody ConversionDTO conversionDTO, @PathVariable("id") Long id) {
+        try {
+            Conversion conversion = this.service.saveConversion(id, conversionDTO);
+
+            return new ResponseEntity<>(conversion, HttpStatus.OK);
+        } catch (Exception e) {
+            if (e.getMessage().contains("Moeda especificada não existe")) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

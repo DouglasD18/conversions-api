@@ -1,6 +1,7 @@
 package com.conversionsapi.services;
 
 import com.conversionsapi.domain.conversion.Conversion;
+import com.conversionsapi.dtos.ConversionDTO;
 import com.conversionsapi.repositories.ConversionRepositorie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,23 @@ public class ConversionService {
         conversion.setRealCurr(realCurr);
         conversion.setConvertedValue(convertedValue);
         conversion.setCreatedAt(LocalDateTime.now());
+        conversion.setUpdateAt(LocalDateTime.now());
+
+        return this.repositorie.save(conversion);
+    }
+
+    public Conversion findConversionById(Long id) throws Exception {
+        return this.repositorie.findControllerById(id).orElseThrow(() -> new Exception("Converção não encontrada."));
+    }
+
+    public Conversion saveConversion(Long id, ConversionDTO conversionDTO) throws Exception {
+        Conversion conversion = this.findConversionById(id);
+        Float bid = this.request(conversionDTO.realCurr(), conversionDTO.convertedCurr());
+
+        conversion.setRealCurr(conversionDTO.realCurr());
+        conversion.setConvertCurr(conversionDTO.convertedCurr());
+        conversion.setRealValue(conversionDTO.realValue());
+        conversion.setConvertedValue(conversionDTO.realValue().multiply(BigDecimal.valueOf(bid)));
         conversion.setUpdateAt(LocalDateTime.now());
 
         return this.repositorie.save(conversion);
