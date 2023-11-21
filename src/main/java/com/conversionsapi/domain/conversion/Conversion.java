@@ -1,5 +1,6 @@
 package com.conversionsapi.domain.conversion;
 
+import com.conversionsapi.dtos.ConversionDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,5 +25,13 @@ public class Conversion {
     private String convertCurr;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
+
+    public Conversion(ConversionDTO conversion) {
+        this.realCurr = conversion.realCurr();
+        this.realValue = conversion.realValue();
+        this.convertCurr = conversion.convertedCurr();
+        this.createdAt = LocalDateTime.now();
+        this.updateAt = LocalDateTime.now();
+    }
 
 }
