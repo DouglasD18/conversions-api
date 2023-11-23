@@ -14,9 +14,7 @@ import java.math.BigDecimal;
 
 import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,12 +41,7 @@ class ConversionsApiApplicationTests {
 						.contentType("application/json")
 						.content(json)
 				)
-				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.id").exists())
-				.andExpect(jsonPath("$.convertedValue").exists())
-				.andExpect((ResultMatcher) jsonPath("$.realCurr", is("BRL")))
-				.andExpect((ResultMatcher) jsonPath("$.realValue", is(78.92)))
-				.andExpect((ResultMatcher) jsonPath("$.convertedCurr", is("EUR")));
+				.andExpect(status().isCreated());
 	}
 
 	@Test
@@ -68,8 +61,40 @@ class ConversionsApiApplicationTests {
 		mockMvc.perform(get("/conversion"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", hasSize(2)))
-//        DESAFIO        .andExpect(jsonPath("$.[*]", contains(Conversion1)))
 		;
+	}
+
+	@Test
+	public void testUpdateConversion() throws Exception {
+		Conversion conversion1 = new Conversion();
+		conversion1.setRealCurr("BTC");
+		conversion1.setConvertCurr("USD");
+		conversion1.setRealValue(BigDecimal.valueOf(54.20));
+		conversionRepositorie.save(conversion1);
+
+		Long id = conversion1.getId();
+
+		Conversion conversion2 = new Conversion();
+		conversion2.setRealCurr("BRL");
+		conversion2.setConvertCurr("EUR");
+		conversion2.setRealValue(BigDecimal.valueOf(78.92));
+
+		String json = new ObjectMapper().writeValueAsString(conversion2);
+
+		mockMvc.perform(put("/conversion/{id}", id)
+						.contentType("application/json")
+						.content(json))
+				.andExpect(status().isOk());
+
+		// Verifica se a tarefa foi atualizada no banco de dados
+		mockMvc.perform(get("/conversion"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$", hasSize(1)))
+				.andExpect(jsonPath("$.id").exists())
+				.andExpect(jsonPath("$.convertedValue").exists())
+				.andExpect((ResultMatcher) jsonPath("$.realCurr", is("BRL")))
+				.andExpect((ResultMatcher) jsonPath("$.realValue", is(78.92)))
+				.andExpect((ResultMatcher) jsonPath("$.convertedCurr", is("EUR")));
 	}
 
 	@Test

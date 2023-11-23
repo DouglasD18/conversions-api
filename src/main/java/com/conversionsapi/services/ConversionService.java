@@ -28,14 +28,17 @@ public class ConversionService {
     }
 
     public Conversion createConversion(String realCurr, String convertedCurr, BigDecimal realValue) throws Exception {
-        Float bid = this.request(realCurr, convertedCurr);
+        String realCurrToUpper = realCurr.toUpperCase();
+        String convertedCurrToUpper = convertedCurr.toUpperCase();
+
+        Float bid = this.request(realCurrToUpper, convertedCurrToUpper);
 
         BigDecimal convertedValue = realValue.multiply(BigDecimal.valueOf(bid));
 
         Conversion conversion = new Conversion();
         conversion.setRealValue(realValue);
-        conversion.setConvertCurr(convertedCurr);
-        conversion.setRealCurr(realCurr);
+        conversion.setConvertCurr(convertedCurrToUpper);
+        conversion.setRealCurr(realCurrToUpper);
         conversion.setConvertedValue(convertedValue);
         conversion.setCreatedAt(LocalDateTime.now());
         conversion.setUpdateAt(LocalDateTime.now());
@@ -47,12 +50,15 @@ public class ConversionService {
         return this.repositorie.findControllerById(id).orElseThrow(() -> new Exception("Converção não encontrada."));
     }
 
-    public Conversion saveConversion(Long id, ConversionDTO conversionDTO) throws Exception {
-        Conversion conversion = this.findConversionById(id);
-        Float bid = this.request(conversionDTO.realCurr(), conversionDTO.convertedCurr());
+    public Conversion updateConversion(Long id, ConversionDTO conversionDTO) throws Exception {
+        String realCurrToUpper = conversionDTO.realCurr().toUpperCase();
+        String convertedCurrToUpper = conversionDTO.convertedCurr().toUpperCase();
 
-        conversion.setRealCurr(conversionDTO.realCurr());
-        conversion.setConvertCurr(conversionDTO.convertedCurr());
+        Conversion conversion = this.findConversionById(id);
+        Float bid = this.request(realCurrToUpper, convertedCurrToUpper);
+
+        conversion.setRealCurr(realCurrToUpper);
+        conversion.setConvertCurr(convertedCurrToUpper);
         conversion.setRealValue(conversionDTO.realValue());
         conversion.setConvertedValue(conversionDTO.realValue().multiply(BigDecimal.valueOf(bid)));
         conversion.setUpdateAt(LocalDateTime.now());

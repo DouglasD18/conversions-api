@@ -42,7 +42,7 @@ public class ConversionController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateConversion(@RequestBody ConversionDTO conversionDTO, @PathVariable("id") Long id) {
         try {
-            Conversion conversion = this.service.saveConversion(id, conversionDTO);
+            Conversion conversion = this.service.updateConversion(id, conversionDTO);
 
             return new ResponseEntity<>(conversion, HttpStatus.OK);
         } catch (Exception e) {

@@ -18,13 +18,13 @@ public class RequestService {
 
     public Float convert(String realCurr, String convertedCurr) throws Exception {
         String url = "https://economia.awesomeapi.com.br/last/";
-        ResponseEntity<Map> response = restTemplate.getForEntity(url + realCurr.toUpperCase() + "-" + convertedCurr.toUpperCase(), Map.class);
+        ResponseEntity<Map> response = restTemplate.getForEntity(url + realCurr + "-" + convertedCurr, Map.class);
 
         if (response.getStatusCode() != HttpStatus.OK) {
             throw new Exception(String.valueOf(Objects.requireNonNull(response.getBody()).get("message")));
         }
 
-        Map conversion = (Map) Objects.requireNonNull(response.getBody()).get(realCurr.toUpperCase() + convertedCurr.toUpperCase());
+        Map conversion = (Map) Objects.requireNonNull(response.getBody()).get(realCurr + convertedCurr);
         return Float.parseFloat((String) conversion.get("bid"));
     }
 
