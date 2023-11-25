@@ -1,6 +1,5 @@
 package com.conversionsapi.domain.conversion;
 
-import com.conversionsapi.dtos.ConversionDTO;
 import jakarta.persistence.*;
 import lombok.*;
 

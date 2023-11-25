@@ -8,7 +8,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class RequestService {
