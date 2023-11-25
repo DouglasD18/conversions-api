@@ -37,7 +37,7 @@ public class ConversionService {
 
         Conversion conversion = new Conversion();
         conversion.setRealValue(realValue);
-        conversion.setConvertCurr(convertedCurrToUpper);
+        conversion.setConvertedCurr(convertedCurrToUpper);
         conversion.setRealCurr(realCurrToUpper);
         conversion.setConvertedValue(convertedValue);
         conversion.setCreatedAt(LocalDateTime.now());
@@ -58,7 +58,7 @@ public class ConversionService {
         Float bid = this.request(realCurrToUpper, convertedCurrToUpper);
 
         conversion.setRealCurr(realCurrToUpper);
-        conversion.setConvertCurr(convertedCurrToUpper);
+        conversion.setConvertedCurr(convertedCurrToUpper);
         conversion.setRealValue(conversionDTO.realValue());
         conversion.setConvertedValue(conversionDTO.realValue().multiply(BigDecimal.valueOf(bid)));
         conversion.setUpdateAt(LocalDateTime.now());

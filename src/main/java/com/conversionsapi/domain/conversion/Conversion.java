@@ -22,7 +22,7 @@ public class Conversion {
     private BigDecimal realValue;
     private String realCurr;
     private BigDecimal convertedValue;
-    private String convertCurr;
+    private String convertedCurr;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
 
